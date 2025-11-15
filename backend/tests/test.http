@@ -1,0 +1,12 @@
+POST http://localhost:80/create_db/
+Content-Type: application/json
+
+{
+  "key": "value"
+}
+
+POST http://localhost:80/fetch/
+Content-Type: application/json
+{
+  "key":"val"
+}

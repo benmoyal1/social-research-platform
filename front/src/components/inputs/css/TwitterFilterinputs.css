@@ -1,0 +1,77 @@
+Container styling .twitter-filter-container {
+  display: flex;
+  flex-direction: column; /* Arrange children in a column */
+  gap: 16px; /* Add spacing between items */
+  width: 100%; /* Optional: make the container full width */
+  padding: 16px; /* Optional: add padding around the container */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+/* Ensure inputs and labels are aligned */
+.twitter-filter-container label {
+  display: flex;
+  flex-direction: column; /* Stack the label and input vertically */
+  gap: 8px; /* Add spacing between label and input */
+}
+
+/* Style for the keyword tag button */
+.keyword-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: background-color 0.3s ease;
+}
+
+/* Style for the "×" icon inside the button */
+.remove-icon {
+  margin-left: 8px;
+  font-size: 12px;
+  color: #888;
+  cursor: pointer;
+}
+
+/* On hover, change the background of the button */
+.keyword-tag:hover {
+  background-color: #d0d0d0;
+}
+
+/* .username-dropdown {
+  transition: all 0.3s ease-in-out;
+} */
+.likes-range {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.likes-range input {
+  width: 48%; /* Make each input half the width of the container */
+}
+
+.likes-range span {
+  margin: 0 10px; /* Add some space between the inputs */
+}
+
+.range-inputs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.range-inputs input {
+  width: 48%; /* Set each input to take up half the width */
+}
+
+.range-inputs span {
+  margin: 0 10px; /* Space between the min and max inputs */
+}
+
+.half-width {
+  width: 48%; /* Each input takes up 48% of the width to leave space between */
+}

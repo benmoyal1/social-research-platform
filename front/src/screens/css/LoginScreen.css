@@ -1,0 +1,106 @@
+/* General container */
+.login-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+/* Top Section */
+.top-section {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  height: 33.33%; /* Adjust height for the top third section */
+  flex: 1;
+  background-color: #f0f2f5;
+  padding: 1rem;
+  display: flex;
+}
+
+.top-section p {
+  margin: 0;
+  padding: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Center Section */
+.center-section {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f2f5;
+}
+
+.login-container {
+  width: 300px;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+/* Style the input fields */
+.login-container input {
+  width: 100%; /* Matches the button's width */
+  max-width: 250px; /* Optional: Adjust maximum width for consistent size */
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+/* Style the login button */
+.login-container button {
+  width: 100%; /* Matches input fields' width */
+  max-width: 250px; /* Optional: Adjust maximum width for consistent size */
+  padding: 0.8rem;
+  margin-top: 1rem;
+  background-color: #f0f2f5;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.login-container button:hover:not(:disabled) {
+  background-color: #4682b4;
+}
+
+.error-message {
+  color: red;
+  margin-top: 0.5rem;
+}
+
+/* Bottom Section */
+.bottom-section {
+  flex: 1;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}

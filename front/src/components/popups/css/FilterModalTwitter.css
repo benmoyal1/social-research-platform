@@ -1,0 +1,147 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: center;
+    z-index: 1001;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Labels */
+label {
+    display: block;
+    margin: 10px 0;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+input:focus {
+    border-color: #1e90ff; /* Blue border on focus */
+    outline: none;
+}
+
+/* Button Styling */
+button {
+    margin: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #1e90ff; /* Blue color for the buttons */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Button Hover and Active States */
+button:hover {
+    background-color: #4682b4; /* Darker blue on hover */
+}
+
+button:active {
+    background-color: #5f9ea0; /* Even darker blue on active */
+}
+
+/* Channel Names Section */
+.channel-names {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+/* Channel Item Styling */
+.channel-item {
+    margin: 5px;
+}
+
+.channel-item button {
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.channel-item button.selected {
+    background-color: #1e90ff; /* Blue color for selected buttons */
+    color: white;
+}
+
+/* Dropdown Styling */
+.channel-dropdown {
+    position: relative;
+    margin: 10px 0;
+}
+
+.channel-dropdown input {
+    width: 100%;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+}
+
+.channel-dropdown input:focus {
+    border-color: #1e90ff; /* Focus state for input field */
+}
+
+/* Dropdown List */
+.dropdown-list {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: 100%;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropdown Item Styling */
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-item.selected {
+    background-color: #1e90ff; /* Blue color for selected dropdown items */
+    color: white;
+}

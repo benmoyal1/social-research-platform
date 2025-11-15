@@ -1,0 +1,253 @@
+import express from 'express';
+import pg from 'pg';
+
+const router = express.Router();
+const { Pool } = pg;
+
+const pool = new Pool({
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 5432,
+  user: process.env.DB_USER || 'research_user',
+  password: process.env.DB_PASSWORD || 'research_pass',
+  database: process.env.DB_NAME || 'research_db',
+});
+
+// Get paginated Telegram data
+router.post('/paginate/telegram', async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 50,
+      dateStart,
+      dateEnd,
+      channels,
+      minViews,
+      maxViews,
+      minComments,
+      maxComments,
+      searchTerm
+    } = req.body;
+
+    // Build dynamic query
+    let queryText = 'SELECT * FROM telegram_messages WHERE 1=1';
+    const values = [];
+    let paramCount = 1;
+
+    if (dateStart) {
+      queryText += ` AND date >= $${paramCount}`;
+      values.push(dateStart);
+      paramCount++;
+    }
+
+    if (dateEnd) {
+      queryText += ` AND date <= $${paramCount}`;
+      values.push(dateEnd);
+      paramCount++;
+    }
+
+    if (channels && channels.length > 0) {
+      queryText += ` AND channel_name = ANY($${paramCount})`;
+      values.push(channels);
+      paramCount++;
+    }
+
+    if (minViews !== undefined && minViews !== null) {
+      queryText += ` AND views >= $${paramCount}`;
+      values.push(minViews);
+      paramCount++;
+    }
+
+    if (maxViews !== undefined && maxViews !== null) {
+      queryText += ` AND views <= $${paramCount}`;
+      values.push(maxViews);
+      paramCount++;
+    }
+
+    if (minComments !== undefined && minComments !== null) {
+      queryText += ` AND comments_num >= $${paramCount}`;
+      values.push(minComments);
+      paramCount++;
+    }
+
+    if (maxComments !== undefined && maxComments !== null) {
+      queryText += ` AND comments_num <= $${paramCount}`;
+      values.push(maxComments);
+      paramCount++;
+    }
+
+    if (searchTerm) {
+      queryText += ` AND content ILIKE $${paramCount}`;
+      values.push(`%${searchTerm}%`);
+      paramCount++;
+    }
+
+    // Get total count
+    const countQuery = queryText.replace('SELECT *', 'SELECT COUNT(*)');
+    const countResult = await pool.query(countQuery, values);
+    const totalRecords = parseInt(countResult.rows[0].count);
+    const totalPages = Math.ceil(totalRecords / limit);
+
+    // Add pagination
+    queryText += ' ORDER BY date DESC, time DESC';
+    queryText += ` LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
+    values.push(limit, (page - 1) * limit);
+
+    const result = await pool.query(queryText, values);
+
+    res.json({
+      data: result.rows,
+      pagination: {
+        currentPage: page,
+        pageSize: limit,
+        totalRecords,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1
+      }
+    });
+
+  } catch (error) {
+    console.error('Pagination error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get paginated Twitter data
+router.post('/paginate/twitter', async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 50,
+      dateStart,
+      dateEnd,
+      users,
+      minLikes,
+      maxLikes,
+      minViews,
+      maxViews,
+      minReplies,
+      maxReplies,
+      minReposts,
+      maxReposts,
+      searchTerm,
+      hashtags
+    } = req.body;
+
+    // Build dynamic query
+    let queryText = 'SELECT * FROM twitter_posts WHERE 1=1';
+    const values = [];
+    let paramCount = 1;
+
+    if (dateStart) {
+      queryText += ` AND date_posted >= $${paramCount}`;
+      values.push(dateStart);
+      paramCount++;
+    }
+
+    if (dateEnd) {
+      queryText += ` AND date_posted <= $${paramCount}`;
+      values.push(dateEnd);
+      paramCount++;
+    }
+
+    if (users && users.length > 0) {
+      queryText += ` AND user_posted = ANY($${paramCount})`;
+      values.push(users);
+      paramCount++;
+    }
+
+    if (minLikes !== undefined && minLikes !== null) {
+      queryText += ` AND likes >= $${paramCount}`;
+      values.push(minLikes);
+      paramCount++;
+    }
+
+    if (maxLikes !== undefined && maxLikes !== null) {
+      queryText += ` AND likes <= $${paramCount}`;
+      values.push(maxLikes);
+      paramCount++;
+    }
+
+    if (minViews !== undefined && minViews !== null) {
+      queryText += ` AND views >= $${paramCount}`;
+      values.push(minViews);
+      paramCount++;
+    }
+
+    if (maxViews !== undefined && maxViews !== null) {
+      queryText += ` AND views <= $${paramCount}`;
+      values.push(maxViews);
+      paramCount++;
+    }
+
+    if (minReplies !== undefined && minReplies !== null) {
+      queryText += ` AND replies >= $${paramCount}`;
+      values.push(minReplies);
+      paramCount++;
+    }
+
+    if (maxReplies !== undefined && maxReplies !== null) {
+      queryText += ` AND replies <= $${paramCount}`;
+      values.push(maxReplies);
+      paramCount++;
+    }
+
+    if (minReposts !== undefined && minReposts !== null) {
+      queryText += ` AND reposts >= $${paramCount}`;
+      values.push(minReposts);
+      paramCount++;
+    }
+
+    if (maxReposts !== undefined && maxReposts !== null) {
+      queryText += ` AND reposts <= $${paramCount}`;
+      values.push(maxReposts);
+      paramCount++;
+    }
+
+    if (searchTerm) {
+      queryText += ` AND description ILIKE $${paramCount}`;
+      values.push(`%${searchTerm}%`);
+      paramCount++;
+    }
+
+    if (hashtags && hashtags.length > 0) {
+      const hashtagConditions = hashtags.map((tag, index) => {
+        values.push(`%${tag}%`);
+        return `hashtags ILIKE $${paramCount + index}`;
+      });
+      queryText += ` AND (${hashtagConditions.join(' OR ')})`;
+      paramCount += hashtags.length;
+    }
+
+    // Get total count
+    const countQuery = queryText.replace('SELECT *', 'SELECT COUNT(*)');
+    const countResult = await pool.query(countQuery, values);
+    const totalRecords = parseInt(countResult.rows[0].count);
+    const totalPages = Math.ceil(totalRecords / limit);
+
+    // Add pagination
+    queryText += ' ORDER BY date_posted DESC';
+    queryText += ` LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
+    values.push(limit, (page - 1) * limit);
+
+    const result = await pool.query(queryText, values);
+
+    res.json({
+      data: result.rows,
+      pagination: {
+        currentPage: page,
+        pageSize: limit,
+        totalRecords,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1
+      }
+    });
+
+  } catch (error) {
+    console.error('Pagination error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+export default router;

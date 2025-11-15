@@ -1,0 +1,34 @@
+.dashboard {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.option {
+    padding: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    width: 100px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.twitter {
+    background-color: #1DA1F2; /* Twitter blue */
+}
+
+.telegram {
+    background-color: #0088cc; /* Telegram blue */
+}
+
+.clicked {
+    background-color: #ffcc00; /* Different color to indicate clicked state */
+}
